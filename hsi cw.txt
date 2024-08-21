@@ -1,0 +1,109 @@
+Struct Pixel declares structure named Pixel
+----------------------------------------------
+Unint16_t red 
+declares member variables within Pixel representing red parts of the pixel.
+they are the type of unsigned 16 bit integer .
+which means values range bw 0 to 65535 (2^16-1).
+we use 16 bit allows more precise colour as compared to 8 bit integers which ranges from 0 to 255.
+-----------------------------------------------
+int width 
+represents width of image pixels
+
+int height 
+represents height of image pixels
+
+struct Pixel*pixels 
+is a pointer to an array of Pixel structures
+Each pixel structures represents colour information of single pixel in image
+Pointer tells where u have stored smtg in a computer memory
+------------------------------------------------
+void free image(struct Image *img) 
+declares function free image 
+it takes pointer Image structure as an argument which is responsible for freeing memory allocated for Image structure and associated pixel data
+
+if (img!=NULL) 
+checks if img is not NULL which ensures its valid b4 attempting to free memory it points to
+
+free(img->pixels) 
+frees memory allocated for pixel data withing Image structure
+pixels of Image structure points to memory allocated for storing pixel data , so 
+
+free(img->pixels) 
+deallocates that memory
+
+free(img) 
+this frees memory allocated for Image structure itself and after freeing pixel data , entire Image structure is deallocated
+-------------------------------------------------
+filename file is opened in binary mode rb
+r = file is opened for reading
+b = file should be opened in binary mode
+
+file is being checked if it can be opened 
+and if not , then it prints an error message and returns null to indicate failure
+
+it allocates memory for the Image structure in malloc 
+and if it fails , it prints an error message and frees any allocated memory and closes the file by returning null
+char format[6] is specifying the type of elements in array and also the size of the array.
+stderr is standard error stream used for error messages and diagnostic information
+
+it reads the file format and checks if it matches expected format (hshex)
+%5s ensures it only reads atmost 5 characters to prevent overflow
+fscan returns number of items successfuly read and assigned and 1 means true 
+strcmp returns 0 if two strings are equal
+if not , it prints error message , frees allocated memory and closes the file by returning null
+
+it reads the width and height of the image 
+if read operation fails or dimensions are invalid , it prints an error message ,frees allocated memory and closes the file by returning null
+
+if (fscanf(f, "%d %d", &img->width, &img->height) != 2 || img->width <= 0 || img->height <= 0)
+reads two integers from file f and stores them into img->width and img->height respectively 
+d% is used to read integers
+img->width <= 0 || img->height <= 0 it checks if both width and height are less than or equal to 0 which helps in ensuring dimensions are valid
+if not , it prints error message , frees allocated memory and closes the file by returning null
+
+img->pixels = malloc(sizeof(struct Pixel) * img->width * img->height);
+it calculates total size needed to store all pixels based on width and height of image
+size of struct Pixel is the total memory required and malloc allocates this amount of memory
+if not , it prints error message , frees allocated memory and closes the file by returning null
+
+(img->width * img->height) this ensures each pixel is processed in such a way that total number of interations is equal to product of image width and height 
+hx% is the format for reading hexadecimal short integer
+it should return 3 if it successfully read all colour values pixel 
+and if so it fails , the if (fscanf(f, "%hx %hx %hx", &img->pixels[i].red, &img->pixels[i].green, &img->pixels[i].blue) != 3) should return true
+----------------------------------------------------
+function takes 2 parameters img which is a pointer to Image structure and filename is a string representing name of file where image data will be saved
+
+filename is opened in binary write mode wb using fopen()
+if it cant be opened , error message is printed and returns false 
+
+write header information using fprintf 
+if it fails , error message closes the file and returns false
+
+%02hhx%02hhx is used to print hexadecimal number x with minimum width of 2 characters and leading zeros if necessary . hh is format saying its unsigned char 
+it writes pixel data for each pixel in image to file and each colour component is written separately using fprintf() 
+if it fails , error message is printed and closes file , returning false
+
+if image data is successfully printed , file is closed and returned true 
+-----------------------------------------------------
+takes a pointer to a constant Image structure named source where source is the one that needs to be duplicated
+
+if sources is valid or not and if its null , it returns null as it shows theres no image to be duplicated
+
+it allocates a new image structure copy using malloc 
+if it fails , it prints error message and returns null
+
+copies width and height from source image to new image structure copy
+
+allocates memory for pixel data of new image based (copy->pixels) on width and height
+if it fails , it prints an error message and frees memory allocated for copy and returns null
+
+it copies pixel data from source image to new image pixel by pixel including all the colour components
+
+it returns a pointer to the newly created duplicate image structure copy
+------------------------------------------------------
+
+
+
+
+
+
